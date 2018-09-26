@@ -2,6 +2,7 @@
 #include <vector>
 #include <cstring>
 #include <string>
+#include <iostream>
 
 #include "./basic.h"
 
@@ -16,7 +17,8 @@ class Solver {
 public:
     std::vector<Basic> mBasic;
     std::vector<Basic> mSolution; // where the final solution is stored.
+    std::vector<double> mObjective; // The objective function for the problem.
 
     double solve(); // Returns an optimal z value.
-    void pivot();
+    void pivot(int entering); // Pivos
 }

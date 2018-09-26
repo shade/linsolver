@@ -1,19 +1,35 @@
 #include <iostream>
 #include <cstdio>
 #include <string>
+#include <vector>
+#include <boost/algorithm/string.hpp>
 
-double getInput()
-{
-    std::string word;
-    char c = getchar();
+typedef VariableToken unsigned long;
 
-    // Get the next integer and publish it.
-    while (!std::isspace(c)) {
-        word.push_back(c);
-        c = getchar();
+std::tuple<double, VariableToken> parseVariable (std::string var) {
+
+    for (int i = var.length(); i--;) {
+        boost::split(variables, constraint, [](char c) {
+            return c == '+';
+        });
     }
-    // Return the actual number.
-    return std::stod(word);
+
+    return varPair;
+}
+
+std::string getConstraint () {
+    std::string constraint = "";
+    std::cout << "Enter A Constraint e.g. 10 + x3 + 4x2 + x1 < 10" << std::endl;
+    std::cin >> constraint;
+
+    // try to split the variables by a +
+    std::vector<std::string> variables;
+    boost::split(variables, constraint, [](char c) {
+        return c == '+';
+    });
+
+    for(std::string const& value: variables) {
+    }
 }
 
 int main () {
@@ -25,5 +41,8 @@ int main () {
     std::cout << "Enter number of constraints: ";
     std::cin >> cons;
 
+    getConstraint();
     return 0;
 }
+
+
