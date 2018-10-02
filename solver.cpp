@@ -26,11 +26,24 @@ double Solver::solve () {
             int maxCoefficientIndex = mBasic.size() - 1;
             double maxCoefficient = -DBL_MAX;
 
-            // This is Anstee's rule.
-            for (int i = mBasic.size() - 1; i--;) {
-                if (mObjective.at(i) <= mObjective.at(maxCoefficientIndex)) {
-                    maxCoefficientIndex = i;
-                }
+            switch (mPivType) {
+                case PivotRule::BLANDS:
+                    // Choose a valid lowest index element
+                    for(int i = 0; i < mBasic.size(); i++;) {
+                        if (mObjective.at(i) > 0) {
+                            maxCoefficientIndex = i;
+                            break;
+                        }
+                    }
+                break;
+                case PivotRule::ANSTEES:
+                    // Choose the highest coefficient, lowest index if tied
+                    for (int i = mBasic.size() - 1; i--;) {
+                        if (mObjective.at(i) <= mObjective.at(maxCoefficientIndex)) {
+                            maxCoefficientIndex = i;
+                        }
+                    }
+                break;
             }
             
             maxCoefficient = mObjective.at(maxCoefficientIndex);
@@ -46,10 +59,8 @@ double Solver::solve () {
                     std::cout << "This linear programming problem is unbounded" << std::endl;
                     break;
                 break;
-                case Error::UNFEASIBLE:
-
+                case Error::INFEASIBLE:
                     std::cout << "This linear programming problem is infeasible" << std::endl;
-                    std::cout << "" << std::endl;
                 break;
             }   
         }
